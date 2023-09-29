@@ -3,6 +3,42 @@
 
 {% block content %}
 <h1>ROOM</h1>
-{{room.name}}
-{{room.desc}}
+
+<style>
+    .container-room{
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+    }
+</style>
+<div class="container-room">
+    <div>
+        <h3>{{room.name}}</h3>
+        <p>{{room.desc}}</p>
+        <hr>
+        {% for mensage in mensages %}
+        <div>
+            <a href="{% url 'update-mensage' mensage.id %}">ATUALIZAR</a>
+            <a href="{% url 'delete-mensage' mensage.id %}">ELIMINAR</a>
+            <small>@{{mensage.user}} {{mensage.created | timesince}}</small>
+            <h3>{{mensage.body}}</h3>
+        </div>
+        {% endfor %}
+        <div>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <input type="text" name="body">
+                <input type="submit" value="comentar">
+            </form>
+        </div>
+    </div>
+    <div>
+        <h3>Particpantes</h3>
+        {% for participante in participantes %}
+        <div>
+            <h3><a href="">@{{participante}}</a></h3>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
 {% endblock content %}
