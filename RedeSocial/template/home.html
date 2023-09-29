@@ -2,4 +2,15 @@
 
 {% block content %}
 <h1>HOME</h1>
+<div>
+    {% for room in rooms %}
+    <div>
+        <small>@{{room.host}}</small>
+        <h3><a href="{% url 'room' room.id %}">{{room.name}}</a></h3>
+        <p>{{room.desc}}</p>
+    </div>
+        <small>{{room.topics}}</small>
+    {% endfor %}
+</div>
 {% endblock content %}
+
