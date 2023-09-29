@@ -7,6 +7,7 @@
         {% csrf_token %}
         <label for="usernamer">username : <input type="text" id="username" name="username" placeholder="username"></label>
         <label for="password">password: <input type="password" id="password" name="password" placeholder="password"></label>
+        <input type="submit" value="ENTRAR">
     </form>
     <p>Ainda nao tens conta <a href="{% url 'register' %}">Registrar</a></p>
 </div>

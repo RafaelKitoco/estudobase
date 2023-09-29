@@ -2,16 +2,34 @@
 
 {% block content %}
 <h1>HOME</h1>
-<div>
-    <h2><a href="">CRIAR</a></h2>
-    {% for room in rooms %}
+<style>
+    .contain-home{
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+</style>
+<div class="contain-home">
     <div>
-        <small>@{{room.host}}</small>
-        <h3><a href="{% url 'room' room.id %}">{{room.name}}</a></h3>
-        <p>{{room.desc}}</p>
+        <a href="{% url 'home'%}">All</a>
+        {% for topic in topics %}
+        <div>
+            <h3><a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a></h3>
+        </div>
+        {% endfor %}
     </div>
-        <small>{{room.topics}}</small>
-    {% endfor %}
+    <div>
+        <h2><a href="{% url 'create' %}">CRIAR</a></h2>
+        <small>{{count}}</small>
+        {% for room in rooms %}
+        <div>
+            <small>@{{room.host}}</small>
+            <h3><a href="{% url 'room' room.id %}">{{room.name}}</a></h3>
+            <p>{{room.desc}}</p>
+        </div>
+            <small>{{room.topics}}</small>
+        {% endfor %}
+    </div>
 </div>
+
 {% endblock content %}
 

@@ -4,13 +4,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-
+from django.db.models import Q
+from .form import *
 
 # Create your views here.
 def Home(request):
-    room = Room.objects.all()
+    q = request.GET.get("q") if request.GET.get("q") != None else ""
 
-    context = {"rooms":room}
+    room = Room.objects.filter(Q(name__contains=q) | Q(topics__name__contains=q) | Q(desc__contains=q))
+    topics = Topics.objects.all()
+    count = room.count()
+
+    context = {"rooms":room, "topics":topics, "count":count}
     return render(request, "home.html", context)
 
 def RoomPage(request, pk):
@@ -24,7 +29,7 @@ def LoginPage(request):
 
     if request.method == "POST":
         username = request.POST.get("username")
-        password = request.POS.get("password")
+        password = request.POST.get("password")
         try:
             user = User.objects.get(username=username)
         except:
@@ -63,5 +68,13 @@ def RegisterPage(request):
     return render(request, "login.html", context)
 
 def CreateRoom(request):
-    context = {}
-    return render(request, "registe_room.html", context)
+    form = RoomForm()
+
+    if request.method == "POST":
+        form = RoomForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+        
+    context = {"form":form}
+    return render(request, "register_room.html", context)
